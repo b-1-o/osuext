@@ -429,3 +429,38 @@ body.osu-studio-active.osu-studio-monochrome .page-mode-link__stripe {
   background-color: var(--osu-studio-accent-alt) !important;
 }
 
+/* Independent colors for the two profile line charts.
+   Rank history uses the additional profile-page-card modifier; the monthly
+   activity charts use profile-page without that modifier. */
+body.osu-studio-active .line-chart--profile-page-card .line-chart__line {
+  stroke: var(--osu-studio-rank-chart-color, #ffcc22) !important;
+}
+
+body.osu-studio-active .line-chart--profile-page-card .line-chart__hover-line {
+  background-color: var(--osu-studio-rank-chart-color, #ffcc22) !important;
+}
+
+body.osu-studio-active .line-chart--profile-page-card .line-chart__hover-circle {
+  border-color: var(--osu-studio-rank-chart-color, #ffcc22) !important;
+}
+
+body.osu-studio-active .line-chart--profile-page-card .line-chart__hover-info-box-text--y strong {
+  color: var(--osu-studio-rank-chart-color, #ffcc22) !important;
+}
+
+body.osu-studio-active .line-chart--profile-page:not(.line-chart--profile-page-card) .line-chart__line {
+  stroke: var(--osu-studio-play-chart-color, #ffcc22) !important;
+}
+
+body.osu-studio-active .line-chart--profile-page:not(.line-chart--profile-page-card) .line-chart__hover-line {
+  background-color: var(--osu-studio-play-chart-color, #ffcc22) !important;
+}
+
+body.osu-studio-active .line-chart--profile-page:not(.line-chart--profile-page-card) .line-chart__hover-circle {
+  border-color: var(--osu-studio-play-chart-color, #ffcc22) !important;
+}
+
+body.osu-studio-active .line-chart--profile-page:not(.line-chart--profile-page-card) .line-chart__hover-info-box-text--y strong {
+  color: var(--osu-studio-play-chart-color, #ffcc22) !important;
+}
+
