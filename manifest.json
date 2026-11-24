@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "osu! Profile Studio",
+  "version": "1.0.0",
+  "description": "Customize osu! profile pages with local themes, glass panels, covers and custom sections.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://osu.ppy.sh/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "osu! Profile Studio"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://osu.ppy.sh/users/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
