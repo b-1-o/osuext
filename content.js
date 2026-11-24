@@ -18,7 +18,7 @@
     showStats: true
   };
 
-  const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
+  const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
   const ROOT_ID = "osu-profile-studio-root";
   let profileId = null;
   let settings = { ...DEFAULTS };
@@ -228,7 +228,7 @@
             <input id="coverUrl" type="text" placeholder="https://example.com/cover.jpg" autocomplete="off">
             <label for="coverFile">Or upload an image</label>
             <input id="coverFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif">
-            <div class="file-note" id="coverNote">Image stays in this browser. Maximum file size: 4 MB.</div>
+            <div class="file-note" id="coverNote">Image stays in this browser. Maximum file size: 2 MB.</div>
             <button class="mini-button" id="clearCover" type="button">Remove custom cover</button>
             <div class="range-label"><label for="coverPosition">Cover vertical position</label><output id="coverPositionValue">50%</output></div>
             <input id="coverPosition" type="range" min="0" max="100" value="50">
@@ -266,6 +266,10 @@
             <textarea id="bannerText" maxlength="360" placeholder="Write a short introduction…"></textarea>
             <label for="bannerImage">Banner image URL (optional)</label>
             <input id="bannerImage" type="text" placeholder="https://example.com/banner.jpg" autocomplete="off">
+            <label for="bannerFile">Or upload a banner image</label>
+            <input id="bannerFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif">
+            <div class="file-note" id="bannerNote">Optional local image · maximum 2 MB.</div>
+            <button class="mini-button" id="clearBannerImage" type="button">Remove banner image</button>
           </section>
           <section class="section">
             <h2 class="section-title">Player statistics</h2>
@@ -307,7 +311,10 @@
     $("pageImage").value = settings.pageImage.startsWith("https://") ? settings.pageImage : "";
     $("coverNote").textContent = settings.coverImage.startsWith("data:image/")
       ? "A local uploaded image is saved for this profile."
-      : "Image stays in this browser. Maximum file size: 4 MB.";
+      : "Image stays in this browser. Maximum file size: 2 MB.";
+    $("bannerNote").textContent = settings.bannerImage.startsWith("data:image/")
+      ? "A local banner image is saved for this profile."
+      : "Optional local image · maximum 2 MB.";
     $("accent").value = settings.accent;
     $("accent2").value = settings.accent2;
     $("textColor").value = settings.textColor;
@@ -319,6 +326,7 @@
     $("bannerTitle").value = settings.bannerTitle;
     $("bannerText").value = settings.bannerText;
     $("bannerImage").value = settings.bannerImage.startsWith("https://") ? settings.bannerImage : "";
+    $("bannerFile").value = "";
     $("showStats").checked = settings.showStats;
     updateRangeLabels();
   }
@@ -426,34 +434,42 @@
 
   function findStats() {
     const candidates = [...document.querySelectorAll(
-      ".profile-stats__stat, .profile-stats__entry, .profile-stats__row, .profile-statistics__stat, [data-stat]"
+      ".profile-stats__entry, .profile-stats__stat, .profile-stats__row, .profile-statistics__stat, [data-stat], .profile-detail-stats-card--solo .value-display"
     )];
     const definitions = [
-      { label: "Ranked score", aliases: /ranked score/i, selectors: [".profile-stats__entry--key-ranked_score"] },
-      { label: "Accuracy", aliases: /accuracy|hit accuracy/i, selectors: [".profile-stats__entry--key-hit_accuracy"] },
-      { label: "Play count", aliases: /play count/i, selectors: [".profile-stats__entry--key-play_count"] },
-      { label: "Maximum combo", aliases: /maximum combo/i, selectors: [".profile-stats__entry--key-maximum_combo"] }
+      { label: "Performance", aliases: /^(pp|performance|performance points?)$/i },
+      { label: "Global rank", aliases: /^(global|global rank|world rank)$/i },
+      { label: "Country rank", aliases: /^(country|country rank|national rank)$/i },
+      { label: "Ranked score", aliases: /ranked score/i },
+      { label: "Accuracy", aliases: /accuracy/i },
+      { label: "Play count", aliases: /play count/i },
+      { label: "Maximum combo", aliases: /maximum combo/i },
+      { label: "Total hits", aliases: /total hits/i }
     ];
 
     const results = [];
+    const seen = new Set();
     for (const definition of definitions) {
-      let element = null;
-      for (const selector of definition.selectors) {
-        element = document.querySelector(selector);
-        if (element) break;
-      }
-      if (!element) {
-        element = candidates.find((candidate) => definition.aliases.test((candidate.innerText || candidate.textContent || "").trim()));
-      }
+      const element = candidates.find((candidate) => {
+        const labelNode = candidate.querySelector(".profile-stats__key, .value-display__label");
+        const labelText = (labelNode?.innerText || labelNode?.textContent || "").replace(/\\s+/g, " ").trim();
+        if (labelText) return definition.aliases.test(labelText);
+        return definition.aliases.test((candidate.innerText || candidate.textContent || "").replace(/\\s+/g, " ").trim());
+      });
       if (!element) continue;
 
-      const valueNode = element.querySelector(".profile-stats__value, .profile-stats__stat-value, .value, strong, b");
-      let value = (valueNode?.innerText || valueNode?.textContent || "").trim();
+      const labelNode = element.querySelector(".profile-stats__key, .value-display__label");
+      const valueNode = element.querySelector(".profile-stats__value, .profile-stats__stat-value, .value-display__value");
+      let value = (valueNode?.innerText || valueNode?.textContent || "").replace(/\\s+/g, " ").trim();
       if (!value) {
-        const raw = (element.innerText || element.textContent || "").replace(/\s+/g, " ").trim();
-        value = raw.replace(definition.aliases, "").replace(/^[:\s–-]+/, "").trim();
+        const raw = (element.innerText || element.textContent || "").replace(/\\s+/g, " ").trim();
+        const labelText = (labelNode?.innerText || labelNode?.textContent || "").trim();
+        value = labelText ? raw.replace(labelText, "").trim() : "";
       }
-      if (value && value.length <= 48) results.push({ label: definition.label, value });
+      if (value && value.length <= 48 && !seen.has(definition.label)) {
+        results.push({ label: definition.label, value });
+        seen.add(definition.label);
+      }
     }
     return results;
   }
@@ -584,29 +600,47 @@
       applySettings();
     });
 
-    $("coverFile").addEventListener("change", async (event) => {
+    $("clearBannerImage").addEventListener("click", () => {
+      settings.bannerImage = "";
+      $("bannerImage").value = "";
+      $("bannerFile").value = "";
+      $("bannerNote").textContent = "Banner image removed. Save to keep this change.";
+      applySettings();
+      renderProfileSections();
+    });
+
+    const handleImageUpload = async (event, target, urlInput, noteNode, label) => {
       const file = event.target.files?.[0];
       if (!file) return;
-      if (!file.type.startsWith("image/")) {
-        showMessage("Choose an image file.", true);
+      const allowedTypes = new Set(["image/png", "image/jpeg", "image/webp", "image/gif", "image/avif"]);
+      if (!allowedTypes.has(file.type)) {
+        showMessage("Use a PNG, JPEG, WebP, GIF or AVIF image.", true);
         event.target.value = "";
         return;
       }
       if (file.size > MAX_IMAGE_BYTES) {
-        showMessage("This image is larger than 4 MB. Choose a smaller one.", true);
+        showMessage("This image is larger than 2 MB. Choose a smaller one.", true);
         event.target.value = "";
         return;
       }
       try {
-        settings.coverImage = await readFileAsDataUrl(file);
-        $("coverUrl").value = "";
-        $("coverNote").textContent = `Uploaded: ${file.name} — save to keep it for this profile.`;
+        settings[target] = await readFileAsDataUrl(file);
+        $(urlInput).value = "";
+        $(noteNode).textContent = `Uploaded: ${file.name} — save to keep it for this profile.`;
         applySettings();
-        showMessage("Cover preview applied. Save changes to store it.");
+        renderProfileSections();
+        showMessage(`${label} preview applied. Save changes to store it.`);
       } catch (error) {
         showMessage(error.message || "Image upload failed.", true);
       }
-    });
+    };
+
+    $("coverFile").addEventListener("change", (event) =>
+      handleImageUpload(event, "coverImage", "coverUrl", "coverNote", "Cover")
+    );
+    $("bannerFile").addEventListener("change", (event) =>
+      handleImageUpload(event, "bannerImage", "bannerImage", "bannerNote", "Banner")
+    );
 
     $("save").addEventListener("click", async () => {
       pullControlsIntoSettings();
@@ -614,7 +648,7 @@
         await storageSet(storageKey(), settings);
         showMessage("Saved for this profile in this browser.");
       } catch (error) {
-        showMessage(`Could not save: ${error.message || "storage error"}`, true);
+        showMessage(`Could not save: ${error.message || "storage error"}. Try smaller images or remove an older profile image.`, true);
       }
     });
 
