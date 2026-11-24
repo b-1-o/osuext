@@ -9,6 +9,8 @@
     accentAlt: "#9a78c7",
     surfaceColor: "#17141c",
     textColor: "#f5f0f4",
+    rankChartColor: "#ffcc22",
+    playChartColor: "#ffcc22",
     glass: true,
     blur: 16,
     surfaceOpacity: 62,
@@ -120,6 +122,8 @@
       accentAlt: validColor(source.accentAlt ?? source.accent2, DEFAULTS.accentAlt),
       surfaceColor: validColor(source.surfaceColor, DEFAULTS.surfaceColor),
       textColor: validColor(source.textColor, DEFAULTS.textColor),
+      rankChartColor: validColor(source.rankChartColor, DEFAULTS.rankChartColor),
+      playChartColor: validColor(source.playChartColor, DEFAULTS.playChartColor),
       glass: source.glass !== false,
       blur: clamp(source.blur, 0, 30),
       surfaceOpacity: clamp(source.surfaceOpacity ?? source.opacity, 35, 98),
@@ -263,6 +267,13 @@
       "        <div><label for=\"textColor\">Text color</label><div class=\"color-cell\"><input id=\"textColor\" type=\"color\"><span>Profile text</span></div></div>\n" +
       "      </div>\n" +
       "    </section>\n" +
+      "    <section class=\"section\"><h2 class=\"section-title\">Chart line colors</h2>\n" +
+      "      <div class=\"color-grid\">\n" +
+      "        <div><label for=\"rankChartColor\">World ranking history</label><div class=\"color-cell\"><input id=\"rankChartColor\" type=\"color\"><span>Rank chart</span></div></div>\n" +
+      "        <div><label for=\"playChartColor\">Monthly games</label><div class=\"color-cell\"><input id=\"playChartColor\" type=\"color\"><span>Activity chart</span></div></div>\n" +
+      "      </div>\n" +
+      "      <div class=\"file-note\">Each color controls its chart line, hover guide and point outline independently. Choose any color, including white or red.</div>\n" +
+      "    </section>\n" +
       "    <section class=\"section\"><h2 class=\"section-title\">Glass and panel style</h2>\n" +
       "      <div class=\"toggle-row\"><span>Glass surfaces</span><input id=\"glass\" type=\"checkbox\"></div>\n" +
       "      <div class=\"range-label\"><label for=\"blur\">Glass blur</label><output id=\"blurValue\">16 px</output></div><input id=\"blur\" type=\"range\" min=\"0\" max=\"30\" value=\"16\">\n" +
@@ -346,6 +357,8 @@
     $("accentAlt").value = settings.accentAlt;
     $("surfaceColor").value = settings.surfaceColor;
     $("textColor").value = settings.textColor;
+    $("rankChartColor").value = settings.rankChartColor;
+    $("playChartColor").value = settings.playChartColor;
     $("glass").checked = settings.glass;
     $("blur").value = String(settings.blur);
     $("surfaceOpacity").value = String(settings.surfaceOpacity);
@@ -368,6 +381,8 @@
       accentAlt: $("accentAlt").value,
       surfaceColor: $("surfaceColor").value,
       textColor: $("textColor").value,
+      rankChartColor: $("rankChartColor").value,
+      playChartColor: $("playChartColor").value,
       glass: $("glass").checked,
       blur: $("blur").value,
       surfaceOpacity: $("surfaceOpacity").value,
@@ -414,6 +429,8 @@
     body.style.setProperty("--osu-studio-accent-alt", settings.accentAlt);
     body.style.setProperty("--osu-studio-surface", surface);
     body.style.setProperty("--osu-studio-text", settings.textColor);
+    body.style.setProperty("--osu-studio-rank-chart-color", settings.rankChartColor);
+    body.style.setProperty("--osu-studio-play-chart-color", settings.playChartColor);
     body.style.setProperty("--osu-studio-blur", settings.glass ? settings.blur + "px" : "0px");
     body.style.setProperty("--osu-studio-radius", settings.cornerRadius + "px");
     body.style.setProperty("--osu-studio-wallpaper-dim", String(settings.wallpaperDim / 100));
@@ -700,6 +717,7 @@
 
     const liveIds = [
       "accent", "accentAlt", "surfaceColor", "textColor",
+      "rankChartColor", "playChartColor",
       "glass", "blur", "surfaceOpacity", "wallpaperDim",
       "cornerRadius", "coverPosition", "showBanner",
       "bannerTitle", "bannerText", "showStats"
