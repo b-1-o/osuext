@@ -16,7 +16,7 @@ assert.ok(manifest.content_scripts.some((entry) =>
   && entry.css.includes("styles.css")
 ), "The content script must target osu! profiles");
 
-const declaredIds = new Set([...content.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
+const declaredIds = new Set([...content.matchAll(/id=\\?"([^"\\]+)\\?"/g)].map((match) => match[1]));
 const referencedIds = new Set([...content.matchAll(/\$\("([^"]+)"\)/g)].map((match) => match[1]));
 for (const id of referencedIds) {
   assert.ok(declaredIds.has(id), `The editor references missing element #${id}`);
@@ -48,8 +48,9 @@ for (const feature of [
   assert.ok(content.includes(feature), `Expected feature is missing: ${feature}`);
 }
 
-assert.ok(content.includes('id="minimize"'), "The editor needs an explicit collapse control");
-assert.ok(content.includes('id="launcher"'), "The compact launcher must exist");
+assert.ok(declaredIds.has("minimize"), "The editor needs an explicit collapse control");
+assert.ok(declaredIds.has("launcher"), "The compact launcher must exist");
+assert.ok(declaredIds.has("wallpaperFile"), "A local wallpaper file input must exist");
 assert.ok(styles.includes("body.osu-studio-active.osu-studio-has-wallpaper"), "Full-page wallpaper styles are required");
 assert.ok(styles.includes(".profile-detail-stats-card") && styles.includes("border-radius: 0 !important"), "Nested statistic cards must stay flat");
 assert.ok(!styles.includes(".osu-studio-glass-surface"), "The old nested glass-card implementation must not return");
