@@ -25,7 +25,6 @@ for (const id of referencedIds) {
 }
 
 for (const selector of [
-  ".profile-info__bg",
   ".page-extra--userpage",
   ".page-extra__content-overflow-wrapper-outer",
   ".profile-detail-stats-card--solo .value-display",
@@ -33,6 +32,7 @@ for (const selector of [
 ]) {
   assert.ok(content.includes(selector), `Expected osu!web selector is missing: ${selector}`);
 }
+assert.ok(styles.includes(".profile-info__bg"), "The official osu! cover selector must be styled.");
 
 for (const feature of [
   "chrome.storage.local",
