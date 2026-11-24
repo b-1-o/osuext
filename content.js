@@ -158,6 +158,17 @@
     return Math.round((hue * 60 + 360) % 360);
   }
 
+  function colorSaturation(hex) {
+    const { r, g, b } = hexToRgb(hex);
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    return max === 0 ? 0 : (max - min) / max;
+  }
+
+  function isNeutralColor(hex) {
+    return colorSaturation(hex) < 0.085;
+  }
+
   function hexToRgba(hex, alpha) {
     const { r, g, b } = hexToRgb(hex);
     return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
@@ -376,15 +387,29 @@
     const body = document.body;
     const mainHue = hexToHue(settings.accent);
     const secondaryHue = hexToHue(settings.accentAlt);
+    const monochrome = isNeutralColor(settings.accent) && isNeutralColor(settings.accentAlt);
     const opacity = settings.glass ? settings.surfaceOpacity / 100 : 0.97;
     const surface = hexToRgba(settings.surfaceColor, opacity);
 
     body.classList.add("osu-studio-active");
     body.classList.toggle("osu-studio-has-wallpaper", Boolean(settings.wallpaperImage));
     body.classList.toggle("osu-studio-has-cover", Boolean(settings.coverImage));
-    body.style.setProperty("--base-hue-override", String(mainHue));
-    body.style.setProperty("--colour-pink-hue", String(mainHue));
-    body.style.setProperty("--colour-purple-hue", String(secondaryHue));
+    body.classList.toggle("osu-studio-monochrome", monochrome);
+
+    // osu! builds most of its UI palette from hue-only CSS variables. A grey
+    // colour has no meaningful hue, so letting it become 0° would turn the
+    // site red/orange. In neutral mode we remove those overrides and let the
+    // stylesheet's monochrome token set below handle the entire UI instead.
+    if (monochrome) {
+      body.style.removeProperty("--base-hue-override");
+      body.style.removeProperty("--colour-pink-hue");
+      body.style.removeProperty("--colour-purple-hue");
+    } else {
+      body.style.setProperty("--base-hue-override", String(mainHue));
+      body.style.setProperty("--colour-pink-hue", String(mainHue));
+      body.style.setProperty("--colour-purple-hue", String(secondaryHue));
+    }
+
     body.style.setProperty("--osu-studio-accent", settings.accent);
     body.style.setProperty("--osu-studio-accent-alt", settings.accentAlt);
     body.style.setProperty("--osu-studio-surface", surface);
@@ -657,8 +682,8 @@
         surfaceColor: "#171321", textColor: "#f4effb"
       },
       graphite: {
-        accent: "#d0a5b9", accentAlt: "#9e98a8",
-        surfaceColor: "#171719", textColor: "#f1f1f2"
+        accent: "#d8d8dc", accentAlt: "#96969e",
+        surfaceColor: "#17191c", textColor: "#f3f4f5"
       }
     };
     if (!presets[name]) return;
