@@ -7,7 +7,7 @@ const popup = readFileSync("popup.js", "utf8");
 const styles = readFileSync("styles.css", "utf8");
 
 assert.equal(manifest.manifest_version, 3, "Manifest V3 is required");
-assert.equal(manifest.version, "1.2.0");
+assert.equal(manifest.version, "1.3.0");
 assert.deepEqual(manifest.permissions, ["storage"]);
 assert.deepEqual(manifest.host_permissions, ["https://osu.ppy.sh/*"]);
 assert.ok(manifest.content_scripts.some((entry) =>
@@ -45,6 +45,10 @@ for (const feature of [
   "osu-studio-has-wallpaper",
   "isNeutralColor",
   "osu-studio-monochrome",
+  "rankChartColor",
+  "playChartColor",
+  "--osu-studio-rank-chart-color",
+  "--osu-studio-play-chart-color",
   "osuProfileStudio:v1:"
 ]) {
   assert.ok(content.includes(feature), `Expected feature is missing: ${feature}`);
@@ -72,3 +76,16 @@ for (const selector of [
 }
 assert.ok(content.includes('accent: "#d8d8dc"'), "Graphite must use a neutral grey accent.");
 assert.ok(content.includes('accentAlt: "#96969e"'), "Graphite's secondary accent must also be neutral.");
+
+for (const selector of [
+  ".line-chart--profile-page-card .line-chart__line",
+  ".line-chart--profile-page-card .line-chart__hover-line",
+  ".line-chart--profile-page-card .line-chart__hover-circle",
+  ".line-chart--profile-page:not(.line-chart--profile-page-card) .line-chart__line",
+  ".line-chart--profile-page:not(.line-chart--profile-page-card) .line-chart__hover-line",
+  ".line-chart--profile-page:not(.line-chart--profile-page-card) .line-chart__hover-circle"
+]) {
+  assert.ok(styles.includes(selector), `Missing independent chart-color selector: ${selector}`);
+}
+assert.ok(declaredIds.has("rankChartColor"), "Rank chart needs its own color picker.");
+assert.ok(declaredIds.has("playChartColor"), "Monthly activity chart needs its own color picker.");
