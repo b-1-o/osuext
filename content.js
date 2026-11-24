@@ -396,7 +396,7 @@
 
   function findAboutAnchor() {
     const userPage = document.querySelector(".page-extra--userpage");
-    return userPage?.querySelector(".page-extra__content-overflow-wrapper-inner .js-audio--group")
+    return userPage?.querySelector(".page-extra__content-overflow-wrapper-outer")
       || userPage?.querySelector(".page-extra__content-overflow-wrapper-inner")
       || userPage
       || document.querySelector('[data-page-id="me"]')
