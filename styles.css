@@ -1,114 +1,183 @@
 :root {
-  --osu-studio-accent: #e66ca7;
-  --osu-studio-accent-2: #8e4b83;
-  --osu-studio-text: #f7edf3;
-  --osu-studio-panel: rgba(19, 16, 23, .78);
-  --osu-studio-blur: 18px;
-  --osu-studio-opacity: .74;
-  --osu-studio-radius: 20px;
+  --osu-studio-accent: #e96a9e;
+  --osu-studio-accent-alt: #9a78c7;
+  --osu-studio-surface: rgba(23, 20, 28, .84);
+  --osu-studio-text: #f5f0f4;
+  --osu-studio-blur: 16px;
+  --osu-studio-radius: 8px;
 }
 
 body.osu-studio-active {
-  --osu-studio-link: var(--osu-studio-accent);
+  --link-color: var(--osu-studio-accent);
+  --link-hover-color: var(--osu-studio-accent-alt);
+  color: var(--osu-studio-text);
 }
 
-body.osu-studio-active.osu-studio-page-background {
+body.osu-studio-active.osu-studio-has-wallpaper {
+  background-color: #09080d !important;
   background-image:
-    linear-gradient(180deg, rgba(10, 8, 13, .58), rgba(10, 8, 13, .84)),
-    var(--osu-studio-page-image) !important;
+    linear-gradient(
+      rgba(5, 4, 8, var(--osu-studio-wallpaper-dim, .18)),
+      rgba(5, 4, 8, var(--osu-studio-wallpaper-dim, .18))
+    ),
+    var(--osu-studio-wallpaper-image) !important;
   background-position: center top !important;
   background-size: cover !important;
+  background-repeat: no-repeat !important;
   background-attachment: fixed !important;
 }
 
-body.osu-studio-active.osu-studio-page-background .osu-page {
-  background: transparent !important;
+/* Let the body wallpaper show through osu!'s page layout. */
+body.osu-studio-active #main,
+body.osu-studio-active main,
+body.osu-studio-active .osu-page,
+body.osu-studio-active .osu-page--generic-compact,
+body.osu-studio-active .user-profile-pages,
+body.osu-studio-active .user-profile-pages > [data-page-id] {
+  background-color: transparent !important;
+  background-image: none !important;
 }
 
-body.osu-studio-active.osu-studio-has-cover .profile-info__bg {
-  background-image: var(--osu-studio-cover-image) !important;
-  background-position: center var(--osu-studio-cover-position, 50%) !important;
-  background-size: cover !important;
+/* One surface per main profile area. Nested statistic cards stay flat. */
+body.osu-studio-active .profile-info,
+body.osu-studio-active .profile-detail,
+body.osu-studio-active .page-extra,
+body.osu-studio-active .profile-links {
+  color: var(--osu-studio-text) !important;
+  background: var(--osu-studio-surface) !important;
+  border: 0 !important;
+  border-radius: var(--osu-studio-radius) !important;
+  backdrop-filter: blur(var(--osu-studio-blur)) saturate(135%);
+  -webkit-backdrop-filter: blur(var(--osu-studio-blur)) saturate(135%);
+  box-shadow: none;
+}
+
+body.osu-studio-active .profile-info {
+  overflow: hidden;
 }
 
 body.osu-studio-active .profile-info__bg {
   position: relative;
+  background-position: center var(--osu-studio-cover-position, 50%) !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+}
+
+body.osu-studio-active.osu-studio-has-cover .profile-info__bg {
+  background-image: var(--osu-studio-cover-image) !important;
+}
+
+body.osu-studio-active .profile-info__details {
+  color: var(--osu-studio-text) !important;
+  background: transparent !important;
+}
+
+body.osu-studio-active .profile-detail {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+body.osu-studio-active .page-extra {
   overflow: hidden;
 }
 
-body.osu-studio-active .profile-info__bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(8, 7, 11, .52), transparent 72%),
-    linear-gradient(0deg, rgba(8, 7, 11, .35), transparent 65%);
+body.osu-studio-active .page-extra__content-overflow-wrapper-inner {
+  background: transparent !important;
 }
 
-body.osu-studio-active .osu-studio-glass-surface {
-  background: color-mix(in srgb, var(--osu-studio-panel) 100%, transparent) !important;
-  border: 1px solid color-mix(in srgb, var(--osu-studio-accent) 24%, rgba(255,255,255,.12)) !important;
-  border-radius: var(--osu-studio-radius) !important;
-  backdrop-filter: blur(var(--osu-studio-blur)) saturate(145%);
-  -webkit-backdrop-filter: blur(var(--osu-studio-blur)) saturate(145%);
-  box-shadow: 0 14px 44px rgba(0, 0, 0, .16);
+body.osu-studio-active .profile-detail-stats-card,
+body.osu-studio-active .profile-detail-stats-card--extra,
+body.osu-studio-active .profile-detail-stats-card__top,
+body.osu-studio-active .profile-detail-stats-card__middle,
+body.osu-studio-active .profile-detail-stats-card__bottom,
+body.osu-studio-active .profile-stats {
+  color: var(--osu-studio-text) !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.osu-studio-active .profile-detail-stats-card__bottom {
+  background-image: none !important;
+}
+
+body.osu-studio-active .profile-stats {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.osu-studio-active .profile-info__name,
+body.osu-studio-active .profile-info__title,
+body.osu-studio-active .profile-detail,
+body.osu-studio-active .page-extra,
+body.osu-studio-active .profile-links,
+body.osu-studio-active .profile-stats__key,
+body.osu-studio-active .profile-stats__value {
   color: var(--osu-studio-text);
-}
-
-body.osu-studio-active .osu-studio-glass-surface a,
-body.osu-studio-active .profile-info a,
-body.osu-studio-active .profile-detail a,
-body.osu-studio-active .page-extra a {
-  color: var(--osu-studio-accent);
 }
 
 body.osu-studio-active .profile-info__title {
-  color: var(--osu-studio-accent-2) !important;
+  color: var(--osu-studio-accent-alt) !important;
 }
 
-body.osu-studio-active .profile-info__bg .profile-page-cover-editor-button {
-  position: relative;
-  z-index: 2;
+body.osu-studio-active .profile-info a,
+body.osu-studio-active .profile-detail a,
+body.osu-studio-active .page-extra a,
+body.osu-studio-active .profile-links a {
+  color: var(--osu-studio-accent);
 }
 
+body.osu-studio-active .profile-info a:hover,
+body.osu-studio-active .profile-detail a:hover,
+body.osu-studio-active .page-extra a:hover,
+body.osu-studio-active .profile-links a:hover {
+  color: var(--osu-studio-accent-alt);
+}
+
+body.osu-studio-active .page-mode__item--active,
+body.osu-studio-active .page-mode__item--active a,
+body.osu-studio-active .profile-detail-stats-card__variant--active {
+  color: var(--osu-studio-accent) !important;
+}
+
+/* Custom sections are integrated into the About Me column, not nested cards. */
 body.osu-studio-active .osu-studio-custom-banner,
 body.osu-studio-active .osu-studio-custom-stats {
   color: var(--osu-studio-text);
-  background: var(--osu-studio-panel);
-  border: 1px solid color-mix(in srgb, var(--osu-studio-accent) 30%, rgba(255,255,255,.14));
-  border-radius: var(--osu-studio-radius);
-  backdrop-filter: blur(var(--osu-studio-blur)) saturate(150%);
-  -webkit-backdrop-filter: blur(var(--osu-studio-blur)) saturate(150%);
-  box-shadow: 0 18px 55px rgba(0, 0, 0, .22);
-  margin: 18px 0;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, .11);
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
   overflow: hidden;
 }
 
 .osu-studio-custom-banner {
   position: relative;
-  min-height: 150px;
   display: flex;
   align-items: center;
-  isolation: isolate;
+  min-height: 155px;
   padding: clamp(22px, 4vw, 38px);
+  isolation: isolate;
 }
 
 .osu-studio-custom-banner::before {
   content: "";
   position: absolute;
-  inset: 0;
   z-index: -1;
+  inset: 0;
   background:
-    linear-gradient(90deg, rgba(10, 8, 14, .86), rgba(10, 8, 14, .28)),
-    var(--osu-studio-banner-image, linear-gradient(135deg, color-mix(in srgb, var(--osu-studio-accent) 38%, #17111b), #17131e));
+    linear-gradient(90deg, rgba(8, 7, 12, .76), rgba(8, 7, 12, .2)),
+    var(--osu-studio-banner-image, linear-gradient(120deg, var(--osu-studio-accent), var(--osu-studio-accent-alt)));
   background-position: center;
   background-size: cover;
-  opacity: .92;
+  opacity: .96;
 }
 
 .osu-studio-custom-banner__content {
-  max-width: 720px;
+  max-width: 760px;
 }
 
 .osu-studio-custom-banner__eyebrow {
@@ -124,70 +193,68 @@ body.osu-studio-active .osu-studio-custom-stats {
 .osu-studio-custom-banner__title {
   margin: 0;
   color: #fff !important;
-  font-size: clamp(22px, 3vw, 34px);
-  font-weight: 800;
+  font-size: clamp(22px, 3vw, 36px);
+  font-weight: 850;
   letter-spacing: -.045em;
   line-height: 1.08;
-  text-shadow: 0 2px 20px rgba(0,0,0,.28);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, .3);
 }
 
 .osu-studio-custom-banner__text {
   max-width: 620px;
   margin: 10px 0 0;
-  color: rgba(255,255,255,.82) !important;
+  color: rgba(255, 255, 255, .86) !important;
   font-size: 13px;
   line-height: 1.65;
 }
 
 .osu-studio-custom-stats {
-  padding: 20px;
+  padding: 17px 0 8px;
 }
 
 .osu-studio-custom-stats__heading {
-  margin: 0 0 14px;
-  color: var(--osu-studio-text) !important;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: .02em;
+  margin: 0 0 13px;
+  color: var(--osu-studio-accent) !important;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .14em;
 }
 
 .osu-studio-custom-stats__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0;
 }
 
 .osu-studio-custom-stats__item {
   min-width: 0;
-  padding: 13px 14px;
-  border: 1px solid rgba(255,255,255,.09);
-  border-radius: 14px;
-  background: rgba(255,255,255,.045);
+  padding: 9px 15px 11px;
+  border-left: 1px solid rgba(255, 255, 255, .1);
+  background: transparent;
+}
+
+.osu-studio-custom-stats__item:first-child {
+  border-left: 0;
+  padding-left: 0;
 }
 
 .osu-studio-custom-stats__label {
   display: block;
-  color: rgba(255,255,255,.58);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .08em;
+  color: color-mix(in srgb, var(--osu-studio-text) 58%, transparent);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: .09em;
   text-transform: uppercase;
 }
 
 .osu-studio-custom-stats__value {
   display: block;
   margin-top: 6px;
-  color: #fff;
+  color: var(--osu-studio-text);
   font-size: clamp(17px, 2vw, 22px);
-  font-weight: 800;
+  font-weight: 850;
   letter-spacing: -.04em;
   overflow-wrap: anywhere;
-}
-
-.osu-studio-custom-stats__empty {
-  color: rgba(255,255,255,.58);
-  font-size: 12px;
-  line-height: 1.6;
 }
 
 @media (max-width: 700px) {
@@ -195,21 +262,25 @@ body.osu-studio-active .osu-studio-custom-stats {
     min-height: 125px;
     padding: 20px;
   }
-  .osu-studio-custom-stats {
-    padding: 15px;
-  }
+
   .osu-studio-custom-stats__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .osu-studio-custom-stats__item:nth-child(odd) {
+    border-left: 0;
+    padding-left: 0;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .osu-studio-custom-banner,
   .osu-studio-custom-stats {
-    animation: osu-studio-enter .35s ease both;
+    animation: osu-studio-enter .28s ease both;
   }
+
   @keyframes osu-studio-enter {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
   }
 }

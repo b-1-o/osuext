@@ -1,40 +1,40 @@
 # osu! Profile Studio
 
-A local Chromium extension for customizing osu! player profile pages. It adds a compact visual editor directly to `https://osu.ppy.sh/users/*`.
+A local Chromium extension for turning an osu! player profile into a personalized page. The editor is injected into `https://osu.ppy.sh/users/*` and stores each profile design in the current browser.
 
-## Features
+## What it customizes
 
-- Replace the visible profile cover (`.profile-info__bg`) with an HTTPS image or a local upload.
-- Set an optional page background and adjust the cover's vertical position.
-- Choose accent, secondary and text colors, with Ruby Rose, Cold Glass and Violet Night presets.
-- Apply a glass treatment to the profile header, detail/statistics panels and profile sections; tune blur and panel opacity.
-- Add a custom banner immediately after the About Me content, with a title, description and optional background image.
-- Add a compact player snapshot using values already rendered in the osu! profile statistics.
-- Save settings separately for each profile ID in `chrome.storage.local`.
-- Keep the editor isolated in a Shadow DOM so its controls do not inherit the website's styles.
+- **Full-page wallpaper:** paste an HTTPS image address or upload an image from your device. The wallpaper covers the profile page, with an adjustable darkening layer.
+- **Profile cover:** replace the visible `.profile-info__bg` cover with an HTTPS image or local upload, and adjust its vertical position.
+- **Real osu! color theme:** the main color picker updates osu!web's native `--base-hue-override` and color-hue variables. The secondary accent, panel color and text color are independently adjustable.
+- **Glass treatment:** enable or disable glass, tune blur and panel opacity, and choose a corner radius from square to rounded.
+- **About Me banner:** add a title, description and optional local/remote image below the About Me content.
+- **Player snapshot:** show a compact row of statistics already rendered on the osu! profile.
+- **Per-profile settings:** designs are stored separately by profile ID in `chrome.storage.local`.
 
-## Install in Chrome, Brave or another Chromium browser
+The editor is a compact round launcher in the lower-right corner. When opened, the launcher hides; use the minus button in the editor header or press Escape to collapse it. `Alt+Shift+O` toggles it.
 
-1. Download the [feature/profile-studio ZIP](https://github.com/b-1-o/osuext/archive/refs/heads/feature/profile-studio.zip) and extract it.
-2. Open `chrome://extensions` (in Brave, open `brave://extensions`).
+## Install in Brave, Chrome or another Chromium browser
+
+1. Download the [latest main branch ZIP](https://github.com/b-1-o/osuext/archive/refs/heads/main.zip) and extract it.
+2. Open `brave://extensions` in Brave or `chrome://extensions` in Chrome.
 3. Enable **Developer mode**.
-4. Select **Load unpacked** and choose the extracted `osuext` folder (the folder containing `manifest.json`).
-5. Open an osu! player profile and reload the page.
-6. Use the **PROFILE STUDIO** floating button at the lower-right corner, or open the extension popup and choose **Open profile editor**.
+4. Choose **Load unpacked** and select the extracted `osuext-main` folder containing `manifest.json`.
+5. Open an osu! player profile and refresh the page.
+6. Click the small **OS** launcher in the lower-right corner, or press `Alt+Shift+O`.
 
-## Local storage and privacy
+After updating the extension files, open the extensions page and press the reload icon on osu! Profile Studio, then refresh the osu! profile tab.
 
-All theme values and uploaded cover images are saved in the browser's `chrome.storage.local`, keyed by the profile ID in the URL. This extension does not send profile settings or uploaded images to a third-party service, does not request an osu! API key, and does not change the cover or profile data stored on osu!'s servers.
+## Image uploads
 
-Customizations are visible only in the browser where the extension is installed. Other osu! users will not see them.
+Uploads are optimized locally to WebP before being saved. The source file can be up to 24 MB; the stored optimized image is limited to approximately 1.2 MB. GIF uploads use the first frame. No image is sent to a third-party service.
 
-## Notes
+## Privacy and limitations
 
-- The custom cover replaces the cover image visually on the local page. It does not upload a new official osu! cover.
-- Local cover uploads are limited to 4 MB and common image formats.
-- The player snapshot reads the statistics elements already rendered by osu!web. If a section or statistic is not present on a particular profile or game mode, that value is omitted.
-- The extension targets the current osu!web profile structure. osu!web updates may require selector adjustments.
+All colors, uploaded images and custom sections are local browser customizations. They do **not** modify the profile or cover stored on osu!'s servers, and other players will not see them unless they also use this extension with the same settings. No osu! API key or account login is requested.
+
+The extension follows osu!web's current profile DOM and CSS variables. If osu! changes its website structure, selectors may need an update. The CI checks syntax, controls, selectors and styling rules; a visual check on an actual Brave profile is still required after installing.
 
 ## Development
 
-No build step or external JavaScript dependencies are required. The extension uses Manifest V3, a content script, a stylesheet and a small popup.
+No build step or external dependencies are required. The extension uses Manifest V3, a content script, a stylesheet and a small popup.
