@@ -12,18 +12,17 @@ body.osu-studio-active {
   --osu-studio-link: var(--osu-studio-accent);
 }
 
-body.osu-studio-active.osu-studio-page-background::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
+body.osu-studio-active.osu-studio-page-background {
   background-image:
-    linear-gradient(180deg, rgba(10, 8, 13, .55), rgba(10, 8, 13, .82)),
-    var(--osu-studio-page-image);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+    linear-gradient(180deg, rgba(10, 8, 13, .58), rgba(10, 8, 13, .84)),
+    var(--osu-studio-page-image) !important;
+  background-position: center top !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+}
+
+body.osu-studio-active.osu-studio-page-background .osu-page {
+  background: transparent !important;
 }
 
 body.osu-studio-active.osu-studio-has-cover .profile-info__bg {
