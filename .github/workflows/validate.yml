@@ -1,0 +1,29 @@
+name: Validate extension
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: |
+          node --check content.js
+          node --check popup.js
+          node --check scripts/validate-extension.mjs
+      - name: Validate manifest and profile integration
+        run: |
+          node -e "JSON.parse(require('node:fs').readFileSync('manifest.json', 'utf8'))"
+          node scripts/validate-extension.mjs
+      - name: Check required extension files
+        run: |
+          test -f popup.html
+          test -f styles.css
+          test -f README.md
