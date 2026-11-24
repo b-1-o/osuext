@@ -17,8 +17,11 @@ jobs:
         run: |
           node --check content.js
           node --check popup.js
-      - name: Validate manifest
-        run: node -e "JSON.parse(require('node:fs').readFileSync('manifest.json', 'utf8'))"
+          node --check scripts/validate-extension.mjs
+      - name: Validate manifest and profile integration
+        run: |
+          node -e "JSON.parse(require('node:fs').readFileSync('manifest.json', 'utf8'))"
+          node scripts/validate-extension.mjs
       - name: Check required extension files
         run: |
           test -f popup.html
