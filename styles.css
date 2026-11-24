@@ -284,3 +284,148 @@ body.osu-studio-active .osu-studio-custom-stats {
     to { opacity: 1; transform: translateY(0); }
   }
 }
+
+/* Full osu! navigation follows the same live palette as the profile. */
+body.osu-studio-active .nav2-header__menu-bg {
+  background: var(--osu-studio-surface) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .12) !important;
+  backdrop-filter: blur(var(--osu-studio-blur)) saturate(135%);
+  -webkit-backdrop-filter: blur(var(--osu-studio-blur)) saturate(135%);
+}
+
+body.osu-studio-active .nav2-header__transition-overlay {
+  background: transparent !important;
+  opacity: 0 !important;
+}
+
+body.osu-studio-active .nav2-header__triangles {
+  opacity: .14;
+  filter: hue-rotate(var(--base-hue-deg, 0deg)) saturate(.45);
+}
+
+body.osu-studio-active .nav2,
+body.osu-studio-active .nav2__menu-link-main,
+body.osu-studio-active .nav2__menu-link-main:visited {
+  color: var(--osu-studio-text) !important;
+}
+
+body.osu-studio-active .nav2__menu-link-main:hover,
+body.osu-studio-active .nav2__menu-link-main:focus-visible,
+body.osu-studio-active .nav2__menu-link-main.js-menu--active {
+  color: var(--osu-studio-accent) !important;
+}
+
+body.osu-studio-active .nav2__menu-link::after,
+body.osu-studio-active .nav2__menu-link-bar,
+body.osu-studio-active .nav2__menu-link-main .nav2__menu-link-bar {
+  background-color: var(--osu-studio-accent-alt) !important;
+}
+
+body.osu-studio-active .nav2__menu-link-main--search:hover {
+  background-color: color-mix(in srgb, var(--osu-studio-accent) 16%, transparent) !important;
+}
+
+/* Dropdowns contain every top-level osu! section (Play, Rankings, Community,
+   Development, Store and Help); keep their glass surface and item states in sync. */
+body.osu-studio-active .simple-menu--nav2 {
+  --item-colour: var(--osu-studio-text);
+  --item-hover-bg: color-mix(in srgb, var(--osu-studio-accent) 16%, transparent);
+  --item-hover-colour: var(--osu-studio-text);
+  --stripe-bg: var(--osu-studio-accent-alt);
+  color: var(--osu-studio-text) !important;
+  background: var(--osu-studio-surface) !important;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(var(--osu-studio-blur)) saturate(135%);
+  -webkit-backdrop-filter: blur(var(--osu-studio-blur)) saturate(135%);
+}
+
+body.osu-studio-active .simple-menu--nav2 .simple-menu__item {
+  color: var(--osu-studio-text) !important;
+}
+
+body.osu-studio-active .simple-menu--nav2 .simple-menu__item:hover,
+body.osu-studio-active .simple-menu--nav2 .simple-menu__item:focus-visible {
+  color: var(--osu-studio-text) !important;
+  background: color-mix(in srgb, var(--osu-studio-accent) 16%, transparent) !important;
+}
+
+body.osu-studio-active .simple-menu--nav2 .simple-menu__item::before {
+  background-color: var(--osu-studio-accent-alt) !important;
+}
+
+/* Profile tabs: About, Modding, Playlists, Multiplayer and Ranked Play. */
+body.osu-studio-active .page-mode {
+  color: var(--osu-studio-text) !important;
+  background: var(--osu-studio-surface) !important;
+  border-radius: 0 !important;
+  backdrop-filter: blur(var(--osu-studio-blur)) saturate(135%);
+  -webkit-backdrop-filter: blur(var(--osu-studio-blur)) saturate(135%);
+}
+
+body.osu-studio-active .page-mode__item,
+body.osu-studio-active .page-mode-link--profile-page,
+body.osu-studio-active .page-mode-link--profile-page:visited {
+  color: var(--osu-studio-text) !important;
+}
+
+body.osu-studio-active .page-mode__item:hover,
+body.osu-studio-active .page-mode-link--profile-page:hover,
+body.osu-studio-active .page-mode-link--profile-page.js-is-active,
+body.osu-studio-active .page-mode-link--profile-page--is-active {
+  color: var(--osu-studio-accent) !important;
+}
+
+body.osu-studio-active .page-mode-link__stripe,
+body.osu-studio-active .page-mode-link__stripe--black,
+body.osu-studio-active .page-mode__underline {
+  background: var(--osu-studio-accent-alt) !important;
+  background-image: none !important;
+}
+
+/* A true neutral palette must desaturate osu!'s own hue-token system too.
+   This keeps fixed nav accents, menu stripes and active indicators grey. */
+body.osu-studio-active.osu-studio-monochrome {
+  --base-hue: 0;
+  --base-hue-deg: 0deg;
+  --colour-pink-hue: 0;
+  --colour-purple-hue: 0;
+  --c-saturation-1: 0%;
+  --c-saturation-2: 0%;
+  --c-saturation-3: 0%;
+  --c-saturation-4: 0%;
+  --hsl-p: 0, 0%, 50%;
+  --hsl-h1: 0, 0%, 70%;
+  --hsl-h2: 0, 0%, 45%;
+  --hsl-c1: 0, 0%, 100%;
+  --hsl-c2: 0, 0%, 90%;
+  --hsl-l1: 0, 0%, 80%;
+  --hsl-l2: 0, 0%, 75%;
+  --hsl-l3: 0, 0%, 70%;
+  --hsl-l4: 0, 0%, 50%;
+  --hsl-d1: 0, 0%, 35%;
+  --hsl-d2: 0, 0%, 30%;
+  --hsl-d3: 0, 0%, 25%;
+  --hsl-d4: 0, 0%, 20%;
+  --hsl-d5: 0, 0%, 15%;
+  --hsl-d6: 0, 0%, 10%;
+  --hsl-f1: 0, 0%, 60%;
+  --hsl-b1: 0, 0%, 40%;
+  --hsl-b2: 0, 0%, 30%;
+  --hsl-b3: 0, 0%, 25%;
+  --hsl-b4: 0, 0%, 20%;
+  --hsl-b5: 0, 0%, 15%;
+  --hsl-b6: 0, 0%, 10%;
+}
+
+body.osu-studio-active.osu-studio-monochrome .nav2-header__triangles {
+  filter: grayscale(1);
+  opacity: .1;
+}
+
+body.osu-studio-active.osu-studio-monochrome .nav2__menu-link::after,
+body.osu-studio-active.osu-studio-monochrome .page-mode-link__stripe {
+  background-color: var(--osu-studio-accent-alt) !important;
+}
+

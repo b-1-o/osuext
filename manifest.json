@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "osu! Profile Studio",
-  "version": "1.1.0",
-  "description": "Personalize osu! profile colors, cover art, full-page wallpaper, glass surfaces and custom sections.",
+  "version": "1.2.0",
+  "description": "Personalize osu! profiles, navigation colors, cover art, wallpapers and glass surfaces.",
   "permissions": [
     "storage"
   ],
