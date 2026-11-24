@@ -383,15 +383,11 @@
   function markGlassSurfaces() {
     const selectors = [
       ".profile-info",
+      ".profile-detail",
       ".profile-stats",
-      ".profile-page--me",
-      ".profile-page--recent-activity",
-      ".profile-page--beatmaps",
-      ".profile-page--historical",
-      ".profile-page--kudosu",
-      ".profile-page--top-ranks",
-      ".profile-page--medals",
-      ".profile-page__section"
+      ".user-profile-pages > [data-page-id]",
+      ".page-extra",
+      ".page-extra__content-overflow-wrapper-inner"
     ];
     for (const selector of selectors) {
       document.querySelectorAll(selector).forEach((node) => node.classList.add("osu-studio-glass-surface"));
@@ -399,12 +395,12 @@
   }
 
   function findAboutAnchor() {
-    return document.querySelector(".profile-page--me .bbcode--profile-page")
-      || document.querySelector(".profile-page--me")
-      || document.querySelector('[data-page="me"] .bbcode--profile-page')
-      || document.querySelector(".profile-page__content .bbcode--profile-page")
-      || document.querySelector(".bbcode--profile-page")
-      || document.querySelector(".profile-page")
+    const userPage = document.querySelector(".page-extra--userpage");
+    return userPage?.querySelector(".page-extra__content-overflow-wrapper-inner .js-audio--group")
+      || userPage?.querySelector(".page-extra__content-overflow-wrapper-inner")
+      || userPage
+      || document.querySelector('[data-page-id="me"]')
+      || document.querySelector(".user-profile-pages")
       || document.querySelector(".profile-info");
   }
 
@@ -433,10 +429,10 @@
       ".profile-stats__stat, .profile-stats__entry, .profile-stats__row, .profile-statistics__stat, [data-stat]"
     )];
     const definitions = [
-      { label: "Performance", aliases: /performance points|\bpp\b/i, selectors: [".profile-stats__stat--pp", ".profile-stats__entry--pp", "[data-stat='pp']"] },
-      { label: "Global rank", aliases: /global rank|world rank/i, selectors: [".profile-stats__stat--global-rank", ".profile-stats__entry--global-rank", "[data-stat='global-rank']"] },
-      { label: "Accuracy", aliases: /accuracy|hit accuracy/i, selectors: [".profile-stats__stat--hit-accuracy", ".profile-stats__entry--hit-accuracy", "[data-stat='accuracy']"] },
-      { label: "Play count", aliases: /play count|plays/i, selectors: [".profile-stats__stat--play-count", ".profile-stats__entry--play-count", "[data-stat='play-count']"] }
+      { label: "Ranked score", aliases: /ranked score/i, selectors: [".profile-stats__entry--key-ranked_score"] },
+      { label: "Accuracy", aliases: /accuracy|hit accuracy/i, selectors: [".profile-stats__entry--key-hit_accuracy"] },
+      { label: "Play count", aliases: /play count/i, selectors: [".profile-stats__entry--key-play_count"] },
+      { label: "Maximum combo", aliases: /maximum combo/i, selectors: [".profile-stats__entry--key-maximum_combo"] }
     ];
 
     const results = [];
