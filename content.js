@@ -466,11 +466,19 @@
 
     if (bannerEnabled) {
       if (!banner) banner = makeBanner();
-      banner.querySelector('[data-role="title"]').textContent = settings.bannerTitle.trim() || " ";
-      banner.querySelector('[data-role="text"]').textContent = settings.bannerText.trim();
+      const title = banner.querySelector('[data-role="title"]');
+      const text = banner.querySelector('[data-role="text"]');
+      const nextTitle = settings.bannerTitle.trim() || " ";
+      const nextText = settings.bannerText.trim();
+      if (title.textContent !== nextTitle) title.textContent = nextTitle;
+      if (text.textContent !== nextText) text.textContent = nextText;
+
       if (settings.bannerImage) {
-        banner.style.setProperty("--osu-studio-banner-image", `linear-gradient(90deg, rgba(10,8,14,.78), rgba(10,8,14,.25)), url(${JSON.stringify(settings.bannerImage)})`);
-      } else {
+        const imageStyle = `linear-gradient(90deg, rgba(10,8,14,.78), rgba(10,8,14,.25)), url(${JSON.stringify(settings.bannerImage)})`;
+        if (banner.style.getPropertyValue("--osu-studio-banner-image") !== imageStyle) {
+          banner.style.setProperty("--osu-studio-banner-image", imageStyle);
+        }
+      } else if (banner.style.getPropertyValue("--osu-studio-banner-image")) {
         banner.style.removeProperty("--osu-studio-banner-image");
       }
     } else if (banner) {
@@ -486,36 +494,41 @@
         statsNode.className = "osu-studio-custom-stats";
         statsNode.dataset.osuStudio = "stats";
       }
-      statsNode.replaceChildren();
-      const heading = document.createElement("h3");
-      heading.className = "osu-studio-custom-stats__heading";
-      heading.textContent = "PLAYER SNAPSHOT";
-      const grid = document.createElement("div");
-      grid.className = "osu-studio-custom-stats__grid";
-      for (const stat of stats) {
-        const item = document.createElement("div");
-        item.className = "osu-studio-custom-stats__item";
-        const label = document.createElement("span");
-        label.className = "osu-studio-custom-stats__label";
-        label.textContent = stat.label;
-        const value = document.createElement("strong");
-        value.className = "osu-studio-custom-stats__value";
-        value.textContent = stat.value;
-        item.append(label, value);
-        grid.append(item);
+
+      const signature = JSON.stringify(stats);
+      if (statsNode.dataset.signature !== signature) {
+        statsNode.replaceChildren();
+        const heading = document.createElement("h3");
+        heading.className = "osu-studio-custom-stats__heading";
+        heading.textContent = "PLAYER SNAPSHOT";
+        const grid = document.createElement("div");
+        grid.className = "osu-studio-custom-stats__grid";
+        for (const stat of stats) {
+          const item = document.createElement("div");
+          item.className = "osu-studio-custom-stats__item";
+          const label = document.createElement("span");
+          label.className = "osu-studio-custom-stats__label";
+          label.textContent = stat.label;
+          const value = document.createElement("strong");
+          value.className = "osu-studio-custom-stats__value";
+          value.textContent = stat.value;
+          item.append(label, value);
+          grid.append(item);
+        }
+        statsNode.append(heading, grid);
+        statsNode.dataset.signature = signature;
       }
-      statsNode.append(heading, grid);
     } else if (statsNode) {
       statsNode.remove();
       statsNode = null;
     }
 
     if (!anchor) return;
-    if (banner && banner.previousElementSibling !== anchor) {
+    if (banner && (banner.parentElement !== anchor.parentElement || banner.previousElementSibling !== anchor)) {
       anchor.insertAdjacentElement("afterend", banner);
     }
     const insertAfter = banner || anchor;
-    if (statsNode && statsNode.previousElementSibling !== insertAfter) {
+    if (statsNode && (statsNode.parentElement !== insertAfter.parentElement || statsNode.previousElementSibling !== insertAfter)) {
       insertAfter.insertAdjacentElement("afterend", statsNode);
     }
     markGlassSurfaces();
