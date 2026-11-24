@@ -37,5 +37,5 @@ editorButton.addEventListener("click", () => {
 });
 
 document.getElementById("open-osu").addEventListener("click", () => {
-  chrome.tabs.create({ url: "https://osu.ppy.sh/community/forums" });
+  chrome.tabs.create({ url: "https://osu.ppy.sh/rankings/osu/performance" });
 });
