@@ -7,7 +7,7 @@ const popup = readFileSync("popup.js", "utf8");
 const styles = readFileSync("styles.css", "utf8");
 
 assert.equal(manifest.manifest_version, 3, "Manifest V3 is required");
-assert.equal(manifest.version, "1.1.0");
+assert.equal(manifest.version, "1.2.0");
 assert.deepEqual(manifest.permissions, ["storage"]);
 assert.deepEqual(manifest.host_permissions, ["https://osu.ppy.sh/*"]);
 assert.ok(manifest.content_scripts.some((entry) =>
@@ -43,6 +43,11 @@ for (const feature of [
   "--base-hue-override",
   "--colour-pink-hue",
   "osu-studio-has-wallpaper",
+  "isNeutralColor",
+  "osu-studio-monochrome",
+  "nav2-header__menu-bg",
+  "simple-menu--nav2",
+  "page-mode--profile-page-extra",
   "osuProfileStudio:v1:"
 ]) {
   assert.ok(content.includes(feature), `Expected feature is missing: ${feature}`);
@@ -58,3 +63,15 @@ assert.ok(popup.includes("chrome.tabs.sendMessage"));
 assert.ok((styles.match(/{/g) ?? []).length === (styles.match(/}/g) ?? []).length, "CSS braces must be balanced");
 
 console.log(`Extension checks passed. ${referencedIds.size} editor controls are connected.`);
+
+for (const selector of [
+  ".nav2-header__menu-bg",
+  ".nav2-header__transition-overlay",
+  ".simple-menu--nav2",
+  ".page-mode",
+  ".osu-studio-monochrome"
+]) {
+  assert.ok(styles.includes(selector), `Missing themed navigation or neutral palette selector: ${selector}`);
+}
+assert.ok(content.includes('accent: "#d8d8dc"'), "Graphite must use a neutral grey accent.");
+assert.ok(content.includes('accentAlt: "#96969e"'), "Graphite's secondary accent must also be neutral.");
