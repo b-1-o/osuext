@@ -7,6 +7,7 @@ A local Chromium extension for turning an osu! player profile into a personalize
 - **Full-page wallpaper:** paste an HTTPS image address or upload an image from your device. The wallpaper covers the profile page, with an adjustable darkening layer.
 - **Profile cover:** replace the visible `.profile-info__bg` cover with an HTTPS image or local upload, and adjust its vertical position.
 - **Real osu! color theme:** the main color picker updates osu!web's native `--base-hue-override` and color-hue variables. The secondary accent, panel color and text color are independently adjustable.
+- **Independent profile chart colors:** choose separate colors for world-rank history and monthly games charts. The graph line, hover guide, point outline and tooltip heading follow each chart's own color.
 - **Glass treatment:** enable or disable glass, tune blur and panel opacity, and choose a corner radius from square to rounded.
 - **About Me banner:** add a title, description and optional local/remote image below the About Me content.
 - **Player snapshot:** show a compact row of statistics already rendered on the osu! profile.
