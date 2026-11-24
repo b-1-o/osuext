@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>osu! Profile Studio</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      width: 320px; margin: 0; padding: 18px; color: #f7edf2;
+      background: radial-gradient(circle at 90% 0%, #52233d 0, transparent 48%), #111014;
+    }
+    .brand { display:flex; align-items:center; gap:11px; margin-bottom:17px; }
+    .mark {
+      width:40px;height:40px;border-radius:14px;display:grid;place-items:center;
+      color:#fff;background:linear-gradient(145deg,#f17ab1,#762e5a);
+      box-shadow:0 8px 26px #cf4b8b42;font-weight:800;font-size:17px;
+    }
+    h1 { font-size:16px; margin:0; letter-spacing:-.35px; }
+    .sub { color:#aa9ca5; font-size:11px; margin-top:3px; }
+    .card { border:1px solid #ffffff17; background:#ffffff08; border-radius:16px; padding:14px; }
+    .status { display:flex; gap:9px; align-items:flex-start; font-size:12px; line-height:1.5; color:#d9ced5; }
+    .dot { flex:0 0 7px; height:7px; margin-top:5px; border-radius:50%; background:#c66b9d; box-shadow:0 0 12px #e36eaa; }
+    button {
+      width:100%; margin-top:13px; padding:11px 13px; border:0; border-radius:12px;
+      background:linear-gradient(110deg,#d85b96,#8f3b78); color:white; font-weight:700;
+      font-size:12px; cursor:pointer; transition:filter .18s,transform .18s;
+    }
+    button:hover { filter:brightness(1.12); transform:translateY(-1px); }
+    button.secondary { margin-top:8px; border:1px solid #ffffff1c; background:#ffffff0a; color:#eadde5; }
+    .foot { margin-top:13px; color:#8f838b; font-size:10px; line-height:1.5; }
+    #message { min-height:16px; margin-top:9px; font-size:11px; color:#e6a6c8; }
+  </style>
+</head>
+<body>
+  <header class="brand">
+    <div class="mark">OS</div>
+    <div>
+      <h1>osu! Profile Studio</h1>
+      <div class="sub">Your profile, your aesthetic.</div>
+    </div>
+  </header>
+  <section class="card">
+    <div class="status"><span class="dot"></span><span id="status">Checking the current tab…</span></div>
+    <button id="open-editor" type="button">Open profile editor</button>
+    <button id="open-osu" class="secondary" type="button">Open osu! profiles</button>
+    <div id="message" role="status" aria-live="polite"></div>
+  </section>
+  <p class="foot">Themes and custom images are saved only in this browser. They do not change your public osu! profile or its server-side cover.</p>
+  <script src="popup.js"></script>
+</body>
+</html>
