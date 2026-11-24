@@ -57,8 +57,19 @@ body.osu-studio-active .osu-studio-glass-surface {
 }
 
 body.osu-studio-active .osu-studio-glass-surface a,
-body.osu-studio-active .profile-info a {
-  --link: var(--osu-studio-accent);
+body.osu-studio-active .profile-info a,
+body.osu-studio-active .profile-detail a,
+body.osu-studio-active .page-extra a {
+  color: var(--osu-studio-accent);
+}
+
+body.osu-studio-active .profile-info__title {
+  color: var(--osu-studio-accent-2) !important;
+}
+
+body.osu-studio-active .profile-info__bg .profile-page-cover-editor-button {
+  position: relative;
+  z-index: 2;
 }
 
 body.osu-studio-active .osu-studio-custom-banner,
