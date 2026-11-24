@@ -15,7 +15,7 @@ A local Chromium extension for customizing osu! player profile pages. It adds a 
 
 ## Install in Chrome, Brave or another Chromium browser
 
-1. Download this repository as a ZIP and extract it.
+1. Download the [feature/profile-studio ZIP](https://github.com/b-1-o/osuext/archive/refs/heads/feature/profile-studio.zip) and extract it.
 2. Open `chrome://extensions` (in Brave, open `brave://extensions`).
 3. Enable **Developer mode**.
 4. Select **Load unpacked** and choose the extracted `osuext` folder (the folder containing `manifest.json`).
