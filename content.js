@@ -753,7 +753,15 @@
     if (!nextId) return;
     if (nextId !== profileId) {
       profileId = nextId;
-      settings = normalizeSettings(await storageGet(storageKey(nextId)));
+      let stored = await storageGet(storageKey(nextId));
+      if (!stored) {
+        const legacy = await storageGet("osuProfileStudio:v1:" + nextId);
+        if (legacy) {
+          stored = legacy;
+          try { await storageSet(storageKey(nextId), normalizeSettings(legacy)); } catch { /* Keep legacy settings loaded for this session. */ }
+        }
+      }
+      settings = normalizeSettings(stored);
       fillControls();
     }
     applySettings();
