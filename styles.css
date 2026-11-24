@@ -45,11 +45,11 @@ body.osu-studio-active .page-extra,
 body.osu-studio-active .profile-links {
   color: var(--osu-studio-text) !important;
   background: var(--osu-studio-surface) !important;
-  border: 1px solid rgba(255, 255, 255, .085) !important;
+  border: 0 !important;
   border-radius: var(--osu-studio-radius) !important;
   backdrop-filter: blur(var(--osu-studio-blur)) saturate(135%);
   -webkit-backdrop-filter: blur(var(--osu-studio-blur)) saturate(135%);
-  box-shadow: 0 10px 34px rgba(0, 0, 0, .16);
+  box-shadow: none;
 }
 
 body.osu-studio-active .profile-info {
