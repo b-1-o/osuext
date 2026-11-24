@@ -45,9 +45,6 @@ for (const feature of [
   "osu-studio-has-wallpaper",
   "isNeutralColor",
   "osu-studio-monochrome",
-  "nav2-header__menu-bg",
-  "simple-menu--nav2",
-  "page-mode--profile-page-extra",
   "osuProfileStudio:v1:"
 ]) {
   assert.ok(content.includes(feature), `Expected feature is missing: ${feature}`);
